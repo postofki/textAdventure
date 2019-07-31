@@ -1,4 +1,5 @@
 #include<iostream>
+using namespace std;
 
 struct state;
 struct transition;
@@ -35,7 +36,7 @@ struct state start = {
     }
 };
 
-struct state octopus = {
+struct state octopus {
     "\nYou move immediately to the bridge of spaceship as you observe the fallen\n"
     "guards and you encounter gigantic tentacles waving inside the room\n"
         "What the fuck will you do?\n",
@@ -47,7 +48,7 @@ struct state octopus = {
     }
 };
 
-struct state asleep = {
+struct state asleep {
     "\n(-_-)\n"
     "Seriously ??\n",
     {
@@ -57,7 +58,7 @@ struct state asleep = {
     }
 };
 
-struct state miracle = {
+struct state miracle {
     "\nWOW...Is it kinda soon to go for that? Aaanyway...\n"
     "You hear the noise of big laser canon shots and the space octopus\n"
     "exploded in thousand pieces coloring your spaceship in purple blood.\n"
@@ -69,21 +70,41 @@ struct state miracle = {
     }
 };
 
+string choicecheck = "0";
+bool isNumber(string str){
+    for(char& c : str) {
+        if(!isdigit(c)){
+            return false;
+        }
+    }
+    return true;
+}
+
 int main(void)
 {
     state *cur = &start;
     while (cur) {
-        std::cout << cur->text << std::endl;
+        cout << cur->text << endl;
 
         unsigned trans = 0;
         while (cur->transitions[trans].text){
-            std::cout << trans << "." << cur->transitions[trans].text;
+            cout << trans << "." << cur->transitions[trans].text;
             trans += 1;
         }
 
         unsigned choice;
-        std::cin >> choice;
-        std::cin.ignore();
+        
+            cin >> choicecheck;
+                
+        if (!isNumber(choicecheck)){
+            cout << "\nInput a freaking number genius\n";
+            choice= trans;
+        }
+        else { 
+            choice=stoi(choicecheck);
+        }
+     
+        cin.ignore();
 
         if(choice < trans){
             cur = cur->transitions[choice].next_state;
@@ -91,6 +112,3 @@ int main(void)
     }
     return 0;
 }
-
-
-
